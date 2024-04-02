@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>CRUD Starter</title>
+    <!-- load local stylesheet (css) -->
+    <link rel="stylesheet" href="/styles.css" />
+    <!-- loading jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+
+    <nav id="navigation">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/insert">Insert A Movie</a></li>
+        <li><a href="/search">Search by Title</a></li>
+        <li><a href="/select">Select from Incomplete Movies</a></li>
+      </ul>
+    </nav>
+    <h1>Search By Title</h1>
+
+    <form method="GET" action="/search/">
+      <p><label>Title: <input type="text" name="term"></label>
+    </form>
+    
+    <script src="/main.js"></script>
+</body>
+</html>

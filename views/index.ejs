@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>CRUD Starter</title>
+    <!-- load local stylesheet (css) -->
+    <link rel="stylesheet" href="/styles.css" />
+    <!-- loading jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+
+    <nav id="navigation">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/insert">Insert A Movie</a></li>
+        <li><a href="/search">Search by Title</a></li>
+        <li><a href="/select">Select from Incomplete Movies</a></li>
+      </ul>
+    </nav>
+
+  <% if (messages.error) { %>
+  <div id="errors">
+    <% messages.error.forEach( msg => {%>
+    <p><%= msg %></p>
+    <% }) %>
+  </div>
+  <% } %>
+
+  <% if (messages.info) { %>
+  <div id="info">
+    <% messages.info.forEach( msg => {%>
+    <p><%= msg %></p>
+    <% }) %>
+  </div>
+  <% } %>
+</div>
+
+    <h1>Welcome!</h1>
+    <p>Everything is fine.</p>
+
+
+    <script src="/main.js"></script>
+</body>
+</html>

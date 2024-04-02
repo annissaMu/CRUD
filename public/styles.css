@@ -1,0 +1,13 @@
+h1 {
+  color: purple;
+}
+
+/* these styles are for the two different kinds of flashed messages. */
+
+#errors {
+    color: red;
+}
+
+#info {
+    color: orange;
+}
