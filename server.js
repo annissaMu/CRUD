@@ -59,10 +59,19 @@ app.get("/", (req, res) => {
     return res.render("index.ejs");
 });
 
-app.get("/search", (req, res) => {
-    
+// search bar page
+app.get("/search/", (req, res) => {
     return res.render("search.ejs");
 });
+
+
+app.get("/update/", (req, res) => {
+    let title = req.query.title;
+    // use title to search data base
+    
+    return res.render("search.ejs");
+})
+
 
 
 // ================================================================
