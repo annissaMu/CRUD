@@ -11,6 +11,7 @@ const flash = require('express-flash');
 
 const { Connection } = require('./connection'); // Olivia's module
 const cs304 = require('./cs304');
+const e = require('connect-flash');
 
 // Create and configure the app
 
@@ -59,20 +60,47 @@ app.get("/", (req, res) => {
     return res.render("index.ejs");
 });
 
+app.get("/insert/", async(req, res) => {
+    let id = req.query.moveTt;
+    let title = req.query.movieTitle;
+    let release = req.query.movieRelease;
+    if (!id) {
+        return res.render("insert.ejs")
+    } else {
+        const db = await Connection.open(mongoUri, "am114");
+        const movies = db.collection("movies");
+        let movie = await movies.find({tt: id}).toArray();
+        if (movie.length == 0) {
+            await movies.insertOne({tt: id, title: title, release: release}); // cannot post ?
+            res.redirect('/search/');
+        } else {
+            res.send('tt already in use');
+        }
+    } 
+})
+
 // search bar page
 app.get("/search/", (req, res) => {
     return res.render("search.ejs");
 });
 
 
-app.get("/update/", (req, res) => {
+app.get("/do-search", async (req, res) => {
     let title = req.query.title;
-    // use title to search data base
-    
-    return res.render("search.ejs");
+    const db = await Connection.open(mongoUri, "am114");
+    const movies = db.collection("movies");
+    let movie = await movies.find({title: new RegExp([title].join(""), "i")}).toArray();
+    if (movie.length>0) {
+        res.redirect(`/update/` + movie[0].tt);
+    } else {
+        return res.send("Sorry no movies found"); // fix this
+    }
+});
+
+app.get("/update/:tt", async(req,res) => {
+    const movieID = req.params.tt;
+    return res.render("update.ejs")
 })
-
-
 
 // ================================================================
 // postlude

@@ -21,8 +21,20 @@
 
     <h1>Search By Title</h1>
 
-    <form method="GET" action="/do-search/">
-      <p><label>Title: <input type="text" name="title"></label>
+    <div id="flashes">
+
+      <ul class="info">
+      
+       <li>Sorry no movies by that name.</li>
+       
+      </ul>
+   
+   </div>
+
+
+    <form method="GET" action="/do-search">
+      <label>Title: <input type="text" name="title"></label>
+      <input type="submit" value="search"></p>
     </form>
     
     <script src="/main.js"></script>
