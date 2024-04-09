@@ -71,9 +71,9 @@ app.post("/insert/", async(req, res) => {
     const db = await Connection.open(mongoUri, "am114");
     const movies = db.collection("movies");
     let movie = await movies.find({tt: id}).toArray();
-    if (movie.length == 0) {
+    if (movie.length > 0) {
         await movies.insertOne({tt: id, title: title, release: release});
-        res.redirect('/search/');
+        res.redirect('/update/'+ id);
     } else {
         res.send('tt already in use');
     }
@@ -99,7 +99,10 @@ app.get("/do-search", async (req, res) => {
 
 app.get("/update/:tt", async(req,res) => {
     const movieID = req.params.tt;
-    return res.render("update.ejs")
+    const db = await Connection.open(mongoUri, "am114");
+    const movies = db.collection("movies");
+    let movie = await movies.find({tt: movieID}).toArray();
+    return res.render("update.ejs", {tt: movieID, title: movie[0].title, releaseYear: movie[0].release, addedBy: movie[0].addedby.name, directorId: movie[0].director.nm, director: movie[0].director.name})
 })
 
 // ================================================================
