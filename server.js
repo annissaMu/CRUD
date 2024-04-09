@@ -60,24 +60,24 @@ app.get("/", (req, res) => {
     return res.render("index.ejs");
 });
 
-app.get("/insert/", async(req, res) => {
+app.get("/insert/", (req, res) => {
+    return res.render("insert.ejs")
+})
+
+app.post("/insert/", async(req, res) => {
     let id = req.query.moveTt;
     let title = req.query.movieTitle;
     let release = req.query.movieRelease;
-    if (!id) {
-        return res.render("insert.ejs")
+    const db = await Connection.open(mongoUri, "am114");
+    const movies = db.collection("movies");
+    let movie = await movies.find({tt: id}).toArray();
+    if (movie.length == 0) {
+        await movies.insertOne({tt: id, title: title, release: release});
+        res.redirect('/search/');
     } else {
-        const db = await Connection.open(mongoUri, "am114");
-        const movies = db.collection("movies");
-        let movie = await movies.find({tt: id}).toArray();
-        if (movie.length == 0) {
-            await movies.insertOne({tt: id, title: title, release: release}); // cannot post ?
-            res.redirect('/search/');
-        } else {
-            res.send('tt already in use');
-        }
-    } 
-})
+        res.send('tt already in use');
+    }
+    })
 
 // search bar page
 app.get("/search/", (req, res) => {
