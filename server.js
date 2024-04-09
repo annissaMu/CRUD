@@ -65,7 +65,8 @@ app.get("/insert/", (req, res) => {
 })
 
 app.post("/insert/", async(req, res) => {
-    let id = req.query.moveTt;
+    let id = req.query.movieTt;
+    console.log("tt in insert", id)
     let title = req.query.movieTitle;
     let release = req.query.movieRelease;
     const db = await Connection.open(mongoUri, "am114");
@@ -99,9 +100,11 @@ app.get("/do-search", async (req, res) => {
 
 app.get("/update/:tt", async(req,res) => {
     const movieID = req.params.tt;
+    console.log(movieID)
     const db = await Connection.open(mongoUri, "am114");
     const movies = db.collection("movies");
     let movie = await movies.find({tt: movieID}).toArray();
+    console.log("movie", movie)
     return res.render("update.ejs", {tt: movieID, title: movie[0].title, releaseYear: movie[0].release, addedBy: movie[0].addedby.name, directorId: movie[0].director.nm, director: movie[0].director.name})
 })
 
