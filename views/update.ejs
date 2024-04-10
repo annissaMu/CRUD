@@ -5,41 +5,29 @@
     <meta charset="UTF-8">
     <title>Update - CS304 CRUD Assignment</title>
     <!-- load local stylesheet (css) -->
-    <link rel="stylesheet" href="/cs304node/crud/styles.css" />
+    <link rel="stylesheet" href="/styles.css" /> 
   </head>
   <body>
 
-        <nav id="navigation">
-      <ul>
-        <li><a href="/cs304node/crud/">Home</a></li>
-        <li><a href="/cs304node/crud/insert">Insert A Movie</a></li>
-        <li><a href="/cs304node/crud/search">Search by Title</a></li>
-        <li><a href="/cs304node/crud/select">Select from Incomplete Movies</a></li>
-      </ul>
-    </nav>
+    <%- include("partials/navbar.ejs") %>
 
-    <div id="flashes">
-    
-
-    
-
-</div>
+    <div id="flashes"></div>
 
 
     <div id="content">
 
     <h1>Update Movie</h1>
 
-    <form method="POST" action="/cs304node/crud/update/1121231">
+    <form method="POST" action="/update/1121231">
       <table>
           <tr><td>TT</td><td><%= tt %></td></tr>
         <tr>
-          <td><label for="movieTitle">Title</label></td>
+          <td><label for="movieTitle">Movie Title</label></td>
           <td>
               
               <input id="movieTitle"
                      name="movieTitle"
-                     value="Hamlet">
+                     value=<%= title %>>
           </td>
         </tr>
         <tr>
@@ -47,7 +35,7 @@
           <td>
               <input id="movieRelease"
                      name="movieRelease"
-                     value="1948">
+                     value=<%= release %>>
           </td>
         </tr>
           <tr>
@@ -63,22 +51,26 @@
           </td>
         </tr>
         <tr>
-          <td><label for="movieDirector">Director ID</label></td>
+          <td><label for="movieDirectorid">Director ID</label></td>
           <td>
-              <input id="movieDirector"
-                     name="movieDirector"
-                     value="">
+              <input id="movieDirectorid"
+                     name="movieDirectorid"
+                     value=<%= directorId %>>
           </td>
         </tr>
         <tr>
-          <td>Director</td>
-            <td>None specified</td>
+          <td><label for="movieDirector">Director</label></td>
+          <td>
+              <input id="movieDirector"
+                     name="movieDirector"
+                     value=<%= director %>>
+          </td>
         </tr>
       </table>
       <input type="submit" value="update">
     </form>
 
-    <form method="POST" action="/cs304node/crud/delete/1121231">
+    <form method="POST" action="/delete/1121231">
       <input type="submit" value="delete 1121231">
     </form>
 

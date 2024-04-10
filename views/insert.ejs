@@ -5,20 +5,13 @@
     <meta charset="UTF-8" />
     <title>Insert - CS304 CRUD Assignment</title>
     <!-- load local stylesheet (css) -->
-    <link rel="stylesheet" href="/cs304node/crud/styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
     </head>
   <body>
-        <nav id="navigation">
-      <ul>
-        <li><a href="/cs304node/crud/">Home</a></li>
-        <li><a href="/cs304node/crud/insert">Insert A Movie</a></li>
-        <li><a href="/cs304node/crud/search">Search by Title</a></li>
-        <li><a href="/cs304node/crud/select">Select from Incomplete Movies</a></li>
-      </ul>
-    </nav>
+    <%- include("partials/navbar.ejs") %>
 
     <div id="flashes">
-
+<!-- 
        <ul class="info">
        
         <li>Missing Input: Movie&#39;s TT is Missing.</li>
@@ -31,7 +24,7 @@
         
         <li>Release is not a four-digit number.</li>
         
-       </ul>
+       </ul> -->
     
     </div>
 

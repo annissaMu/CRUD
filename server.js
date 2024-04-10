@@ -65,39 +65,58 @@ app.get("/insert/", (req, res) => {
 })
 
 app.post("/insert/", async(req, res) => {
-    let id = req.query.movieTt;
+    const id = req.body.movieTt;
     console.log("tt in insert", id)
-    let title = req.query.movieTitle;
-    let release = req.query.movieRelease;
+    if (!id) {
+        req.flash("info", "please enter a movie id")
+        return // todo - do we need to rerender page or anything?
+    }
+    // let title = req.body.movieTitle;
+    // let release = req.body.movieRelease;
     const db = await Connection.open(mongoUri, "am114");
     const movies = db.collection("movies");
     let movie = await movies.find({tt: id}).toArray();
-    if (movie.length > 0) {
-        await movies.insertOne({tt: id, title: title, release: release});
+    if (movie.length == 0) { //if there is no existing movie, and the user submited all data
+        console.log("inserted new movie", movie)
+        await movies.insertOne({tt: id, title: req.body?.movieTitle, release: req.body?.movieRelease});
         res.redirect('/update/'+ id);
     } else {
-        res.send('tt already in use');
-    }
+        console.log("inserted existing tt", movie)
+        req.flash("info", `tt ${id} is already in use, please change your input`); //todo - this isnt working
+        return res.render("insert.ejs", {movieTt: id, movieTitle: req.body?.movieTitle, movieRelease: req.body?.movieRelease}) //need to render the results
+    } 
     })
 
 // search bar page
 app.get("/search/", (req, res) => {
     return res.render("search.ejs");
+    //allowed to skip this feature
 });
 
 
-app.get("/do-search", async (req, res) => {
-    let title = req.query.title;
+app.get("/select/", async (req, res) => {
     const db = await Connection.open(mongoUri, "am114");
     const movies = db.collection("movies");
-    let movie = await movies.find({title: new RegExp([title].join(""), "i")}).toArray();
-    if (movie.length>0) {
-        res.redirect(`/update/` + movie[0].tt);
-    } else {
-        return res.send("Sorry no movies found"); // fix this
-    }
+    let releases = await movies.find({release: null}).toArray();
+    let directors = await movies.find({director: null}).toArray()
+    let movie = releases.concat(directors)
+    return res.render("select.ejs", {movie: movie}) //need to render the results
 });
 
+app.get("/do-select/", async (req, res) => {
+    const movieID = req.query.menuTt;
+    console.log("movieTt", movieID)
+    const db = await Connection.open(mongoUri, "am114");
+    const movies = db.collection("movies");
+    let movie = await movies.find({tt: parseInt(movieID)}).toArray();
+    if (movie.length>0) {
+        console.log("should be rendering")
+        res.redirect(`/update/` + movie[0].tt);
+    } else {
+        console.log("should be flashing", movie)
+        return req.flash("info", "Sorry no movies found"); // fix this
+    }
+});
 app.get("/update/:tt", async(req,res) => {
     const movieID = req.params.tt;
     console.log(movieID)
@@ -105,7 +124,8 @@ app.get("/update/:tt", async(req,res) => {
     const movies = db.collection("movies");
     let movie = await movies.find({tt: movieID}).toArray();
     console.log("movie", movie)
-    return res.render("update.ejs", {tt: movieID, title: movie[0].title, releaseYear: movie[0].release, addedBy: movie[0].addedby.name, directorId: movie[0].director.nm, director: movie[0].director.name})
+    return res.render("update.ejs", {tt: movieID, title: movie[0]?.title, release: movie[0]?.release, addedBy: movie[0]?.addedby?.name, directorId: movie[0]?.director?.nm, director: movie[0]?.director?.name})
+    //todo - we need code to actually update the values in the database
 })
 
 // ================================================================

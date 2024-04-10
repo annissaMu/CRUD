@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Select - CS304 CRUD Assignment</title>
+    <!-- load local stylesheet (css) -->
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+
+    <%- include("partials/navbar.ejs") %>
+
+    <div id="flashes">
+
+
+</div>
+
+
+    <div id="content">
+
+    <h1>Select Movie</h1>
+
+    <form method="GET" action="/do-select/">
+      <label for="menuTt">Movies without release dates or directors:</label>
+      <select id="menuTt" name="menuTt">
+        <option value="none">Choose One</option>
+        <!--Fills out the drop down menu with incomplete movies-->
+                <% movie.forEach( (elt) => {%>
+
+                    <option value="<%= elt.tt %>"><%= elt.title %></option>
+
+                <% }) %>
+                
+      </select>
+      <input type="submit" value="Choose">
+    </form>
+
+    </div>
+        <!-- load local js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/cs304node/crud/main.js"></script>
+
+  </body>
+</html>
