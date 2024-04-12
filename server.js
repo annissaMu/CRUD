@@ -130,31 +130,30 @@ app.get("/update/:tt", async(req,res) => {
     const movies = db.collection("movies");
     let movie = await movies.find({tt: movieID}).toArray();
     console.log("movie", movie)
-    return res.render("update.ejs", {tt: movieID, title: movie[0]?.title, release: movie[0]?.release, addedBy: movie[0]?.addedby?.name, directorId: movie[0]?.director?.nm, director: movie[0]?.director?.name})
+    return res.render("update.ejs", {url: "update" + movieID, tt: movieID, title: movie[0]?.title, release: movie[0]?.release, addedBy: movie[0]?.addedby?.name, addedById: movie[0]?.addedby?.nm, directorId: movie[0]?.director?.nm, director: movie[0]?.director?.name})
 })
 
 app.post("/update/:tt", async(req,res) => {
     const id = req.params.tt;
     const movieTitle = req.body.movieTitle;
     const releaseYear = req.body.movieRelease;
-    const addedBy = "Austen";
     const movieAddedBy = req.body.movieAddedBy;
-    const director = req.body.movieDirector;
+    const directorId = req.body.movieDirectorid;
     const db = await Connection.open(mongoUri, "am114");
-    const movies = db.collection("people"); //todo - we need to finish this
-    let directorObject = movies.find({director.name: director});
+    const people = db.collection("people"); //todo - we need to finish this
+    const lookUpDirector = await people.find({nm: directorId}, {nm: 1, name: 1});
+    const lookUpAddedBy = await people.find({nm: movieAddedBy}, {nm: 1, name: 1});
     const movieObject = {
         tt: id,
         title: movieTitle,
         release: releaseYear,
-        director: {
-            nm: directorId,
-            name: director,
-        },
-        addedby: addedBy,
+        director: lookUpDirector,
+        addedby: lookUpAddedBy,
     }
-    
-    await movies.updateOne(movieObject);
+    const movies = db.collection("movies");
+    await movies.updateOne({tt: id}, { $set: movieObject});
+    return res.render("update.ejs", {url: "update" + movieID, tt: movieID, title: movieTitle, release: releaseYear, addedBy: lookUpAddedBy.nm, directorId: lookUpDirector.nm, director: lookUpDirector.name})
+
 })
 
 // ================================================================

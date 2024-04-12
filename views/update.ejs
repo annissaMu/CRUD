@@ -18,7 +18,6 @@
 
     <h1>Update Movie</h1>
 
-    <%= let url = "/update/" + tt; %>
 
     <form method="POST" action=<%= url %>>
       <table>
@@ -42,14 +41,14 @@
         </tr>
           <tr>
               <td>Added By</td>
-              <td>Austen</td>
+              <td><%= addedBy %></td>
           </tr>
         <tr>
           <td><label for="movieAddedby">Added by</label></td>
           <td>
               <input id="movieAddedby"
                      name="movieAddedby"
-                     value="6">
+                     value=<%= addedById>>
           </td>
         </tr>
         <tr>
