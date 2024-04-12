@@ -18,7 +18,6 @@
 
     <h1>Update Movie</h1>
 
-
     <form method="POST" action=<%= url %>>
       <table>
           <tr><td>TT</td><td><%= tt %></td></tr>
@@ -61,11 +60,10 @@
         </tr>
         <tr>
           <td><label for="movieDirector">Director</label></td>
-          <td>
-              <input id="movieDirector"
-                     name="movieDirector"
-                     value=<%= director %>>
-          </td>
+          <tr>
+            <td>Added By</td>
+            <td><%= director %></td>
+        </tr>
         </tr>
       </table>
       <input type="submit" value="update">
