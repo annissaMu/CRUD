@@ -71,20 +71,26 @@ app.post("/insert/", async(req, res) => {
         req.flash("info", "please enter a movie id")
         return // todo - do we need to rerender page or anything?
     }
-    // let title = req.body.movieTitle;
-    // let release = req.body.movieRelease;
+    let title = req.body.movieTitle;
+    let release = req.body.movieRelease;
     const db = await Connection.open(mongoUri, "am114");
     const movies = db.collection("movies");
     let movie = await movies.find({tt: id}).toArray();
-    if (movie.length == 0) { //if there is no existing movie, and the user submited all data
-        console.log("inserted new movie", movie)
-        await movies.insertOne({tt: id, title: req.body?.movieTitle, release: req.body?.movieRelease});
-        res.redirect('/update/'+ id);
+    if (!(id && title && release)) {
+        console.log("should be flashing")
+        req.flash("info", `please fill out all inputs in the form`);
+        return res.render("insert.ejs")
     } else {
-        console.log("inserted existing tt", movie)
-        req.flash("info", `tt ${id} is already in use, please change your input`); //todo - this isnt working
-        return res.render("insert.ejs", {movieTt: id, movieTitle: req.body?.movieTitle, movieRelease: req.body?.movieRelease}) //need to render the results
-    } 
+        if (movie.length == 0) { //if there is no existing movie, and the user submited all data
+            console.log("inserted new movie", movie)
+            await movies.insertOne({tt: id, title: req.body?.movieTitle, release: req.body?.movieRelease});
+            res.redirect('/update/'+ id);
+        } else {
+            console.log("inserted existing tt", movie)
+            req.flash("info", `tt ${id} is already in use, please change your input`); //todo - this isnt working
+            return res.render("insert.ejs")        } 
+    }
+    
     })
 
 // search bar page
@@ -125,7 +131,30 @@ app.get("/update/:tt", async(req,res) => {
     let movie = await movies.find({tt: movieID}).toArray();
     console.log("movie", movie)
     return res.render("update.ejs", {tt: movieID, title: movie[0]?.title, release: movie[0]?.release, addedBy: movie[0]?.addedby?.name, directorId: movie[0]?.director?.nm, director: movie[0]?.director?.name})
-    //todo - we need code to actually update the values in the database
+})
+
+app.post("/update/:tt", async(req,res) => {
+    const id = req.params.tt;
+    const movieTitle = req.body.movieTitle;
+    const releaseYear = req.body.movieRelease;
+    const addedBy = "Austen";
+    const movieAddedBy = req.body.movieAddedBy;
+    const director = req.body.movieDirector;
+    const db = await Connection.open(mongoUri, "am114");
+    const movies = db.collection("people"); //todo - we need to finish this
+    let directorObject = movies.find({director.name: director});
+    const movieObject = {
+        tt: id,
+        title: movieTitle,
+        release: releaseYear,
+        director: {
+            nm: directorId,
+            name: director,
+        },
+        addedby: addedBy,
+    }
+    
+    await movies.updateOne(movieObject);
 })
 
 // ================================================================

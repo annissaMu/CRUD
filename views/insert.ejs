@@ -10,22 +10,21 @@
   <body>
     <%- include("partials/navbar.ejs") %>
 
-    <div id="flashes">
-<!-- 
-       <ul class="info">
-       
-        <li>Missing Input: Movie&#39;s TT is Missing.</li>
-        
-        <li>tt () is not an integer</li>
-        
-        <li>Missing Input: Title is Missing.</li>
-        
-        <li>Missing Input: Release year is Missing..</li>
-        
-        <li>Release is not a four-digit number.</li>
-        
-       </ul> -->
+    <% if (messages.error) { %>
+      <div id="errors">
+        <% messages.error.forEach( msg => {%>
+        <p><%= msg %></p>
+        <% }) %>
+      </div>
+      <% } %>
     
+      <% if (messages.info) { %>
+      <div id="info">
+        <% messages.info.forEach( msg => {%>
+        <p><%= msg %></p>
+        <% }) %>
+      </div>
+      <% } %>
     </div>
 
 

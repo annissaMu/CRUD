@@ -18,7 +18,9 @@
 
     <h1>Update Movie</h1>
 
-    <form method="POST" action="/update/1121231">
+    <%= let url = "/update/" + tt; %>
+
+    <form method="POST" action=<%= url %>>
       <table>
           <tr><td>TT</td><td><%= tt %></td></tr>
         <tr>
@@ -40,7 +42,7 @@
         </tr>
           <tr>
               <td>Added By</td>
-              <td>Caroline Chou</td>
+              <td>Austen</td>
           </tr>
         <tr>
           <td><label for="movieAddedby">Added by</label></td>
