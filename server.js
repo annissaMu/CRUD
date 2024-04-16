@@ -114,15 +114,18 @@ app.get("/do-select/", async (req, res) => {
     console.log("movieTt", movieID)
     const db = await Connection.open(mongoUri, "am114");
     const movies = db.collection("movies");
-    let movie = await movies.find({tt: parseInt(movieID)}).toArray();
+    let movie = await movies.find({tt: movieID}).toArray();
     if (movie.length>0) {
         console.log("should be rendering")
         res.redirect(`/update/` + movie[0].tt);
     } else {
+         movie = await movies.find().toArray();
         console.log("should be flashing", movie)
-        return req.flash("info", "Sorry no movies found"); // fix this
+        req.flash("info", `please select a different movie`); //todo - this isnt working
+        //maybe should rerender page?
     }
 });
+
 app.get("/update/:tt", async(req,res) => {
     const movieID = req.params.tt;
     console.log(movieID)
@@ -152,7 +155,7 @@ app.post("/update/:tt", async(req,res) => {
     }
     const movies = db.collection("movies");
     await movies.updateOne({tt: id}, { $set: movieObject});
-    return res.render("update.ejs", {url: "update" + movieID, tt: movieID, title: movieTitle, release: releaseYear, addedBy: lookUpAddedBy.nm, directorId: lookUpDirector.nm, director: lookUpDirector.name})
+    return res.render("update.ejs", {url: "update/" + id, tt: id, title: movieTitle, release: releaseYear, addedBy: lookUpAddedBy?.name, addedById: lookUpAddedBy?.nm, directorId: lookUpDirector?.nm, director: lookUpDirector?.name})
 
 })
 
