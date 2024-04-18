@@ -10,8 +10,8 @@
   <body>
 
     <%- include("partials/navbar.ejs") %>
+    <%- include("partials/flash.ejs") %>
 
-    <div id="flashes"></div>
 
 
     <div id="content">
@@ -27,7 +27,7 @@
               
               <input id="movieTitle"
                      name="movieTitle"
-                     value=<%= title %>>
+                     value="<%= title %>">
           </td>
         </tr>
         <tr>
@@ -43,7 +43,7 @@
               <td><%= addedBy %></td>
           </tr>
         <tr>
-          <td><label for="movieAddedby">Added by</label></td>
+          <td><label for="movieAddedby">Added By ID</label></td>
           <td>
               <input id="movieAddedby"
                      name="movieAddedby"
@@ -59,18 +59,15 @@
           </td>
         </tr>
         <tr>
-          <td><label for="movieDirector">Director</label></td>
-          <tr>
-            <td>Added By</td>
+            <td>Director</td>
             <td><%= director %></td>
-        </tr>
         </tr>
       </table>
       <input type="submit" value="update">
     </form>
 
-    <form method="POST" action="/delete/1121231">
-      <input type="submit" value="delete 1121231">
+    <form method="POST" action="/delete/<%= tt %>">
+      <input type="submit" value="delete <%= tt %>">
     </form>
 
     </div>

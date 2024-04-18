@@ -11,23 +11,7 @@
 <body>
 
   <%- include("partials/navbar.ejs") %>
-
-  <% if (messages.error) { %>
-  <div id="errors">
-    <% messages.error.forEach( msg => {%>
-    <p><%= msg %></p>
-    <% }) %>
-  </div>
-  <% } %>
-
-  <% if (messages.info) { %>
-  <div id="info">
-    <% messages.info.forEach( msg => {%>
-    <p><%= msg %></p>
-    <% }) %>
-  </div>
-  <% } %>
-</div>
+  <%- include("partials/flash.ejs") %>
 
 
     <script src="/main.js"></script>
